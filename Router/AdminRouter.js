@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 
@@ -9,90 +10,31 @@ const {
   deleteAdminData,
 } = require("../controllers/AdminController");
 
-
+// Admin authentication middleware
 router.use((req, res, next) => {
-  if (req.session?.user?.role !== "admin") {
+  if (!req.session?.user || req.session.user.role !== "admin") {
     return res.status(401).json({
       success: false,
-      message: "Authentication required.",
+      message: "Authentication required. Please log in as admin.",
     });
   }
 
   next();
 });
 
-
+// Create a new report
 router.post("/", createAdminData);
 
-
+// Get all reports
 router.get("/", getAdminData);
 
-
+// Get a single report by ID
 router.get("/:id", getAdminDataById);
 
-
+// Update an existing report
 router.put("/:id", updateAdminData);
 
-
+// Delete a report
 router.delete("/:id", deleteAdminData);
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const express = require("express");
-
-// const router = express.Router();
-
-// const {
-//   createAdminData,
-//   getAdminData,
-//   getAdminDataById,
-//   updateAdminData,
-//   deleteAdminData,
-// } = require("../controllers/AdminController");
-
-// // Check admin authentication
-// router.use((req, res, next) => {
-//   if (req.session?.user?.role !== "admin") {
-//     return res.status(401).json({
-//       success: false,
-//       message: "Authentication required.",
-//     });
-//   }
-
-//   next();
-// });
-
-// // Save new club data
-// router.post("/", createAdminData);
-
-// // Fetch all club data
-// router.get("/", getAdminData);
-
-// // Fetch a particular record
-// router.get("/:id", getAdminDataById);
-
-// // Update a record
-// router.put("/:id", updateAdminData);
-
-// // Delete a record
-// router.delete("/:id", deleteAdminData);
-
-// module.exports = router;
